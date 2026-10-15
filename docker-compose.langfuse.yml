@@ -1,0 +1,24 @@
+version: '3.8'
+
+# Langfuse self-hosted — observabilidade para o Modo Lab do AgentLab.
+#
+# Antes de subir, crie o banco no seu Postgres:
+#   psql -U <seu-usuario> -c "CREATE DATABASE langfuse;"
+#
+# Sobe o servidor Langfuse na porta 3010.
+# Configure LANGFUSE_URL com seu domínio ou use http://localhost:3010.
+
+services:
+  langfuse:
+    image: langfuse/langfuse:2
+    container_name: langfuse-server
+    restart: unless-stopped
+    ports:
+      - '3010:3000'
+    environment:
+      DATABASE_URL: ${LANGFUSE_DATABASE_URL}
+      NEXTAUTH_URL: ${LANGFUSE_URL}
+      NEXTAUTH_SECRET: ${LANGFUSE_NEXTAUTH_SECRET}
+      SALT: ${LANGFUSE_SALT}
+      TELEMETRY_ENABLED: 'false'
+      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: 'false'
